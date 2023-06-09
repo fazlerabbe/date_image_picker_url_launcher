@@ -37,3 +37,11 @@ final List<EmployeeModel> employeeList = [
           "/data/user/0/com.example.datepicker_employee/cache/3561c251-7871-43d9-850a-8db3340819194338065354336857517.jpg",
       gender: 'male'),
 ];
+List<String> designationList = [
+  'ceo',
+  'manager',
+  'sales manager',
+  'cto',
+  'product manager',
+  'software engineer'
+];

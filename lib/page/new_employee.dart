@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:datepicker_employee/employeeModel.dart';
+import 'package:datepicker_employee/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -24,10 +26,15 @@ class _NewEmployeeState extends State<NewEmployee> {
   String? imagePath;
   ImageSource sourse = ImageSource.camera;
   String genderRadioGroup = 'male';
+  String? designation;
 
   @override
   void dispose() {
     nameController.dispose();
+    mobileController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    salaryController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -37,6 +44,13 @@ class _NewEmployeeState extends State<NewEmployee> {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Employee detais page")),
+        actions: [
+          IconButton(
+              onPressed: () {
+                _saveEmployee;
+              },
+              icon: Icon(Icons.done))
+        ],
       ),
       body: ListView(
         children: [
@@ -83,6 +97,18 @@ class _NewEmployeeState extends State<NewEmployee> {
           SizedBox(
             height: 20,
           ),
+          DropdownButton(
+              isExpanded: true,
+              hint: Text("select designation"),
+              value: designation,
+              items: designationList
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  designation = value;
+                });
+              }),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -183,5 +209,44 @@ class _NewEmployeeState extends State<NewEmployee> {
         print(imagePath);
       });
     }
+  }
+
+  void _saveEmployee() {
+    if (nameController.text.isEmpty) {
+      showMessage(context, "please provide a name for employee");
+      return;
+    }
+    if (mobileController.text.isEmpty) {
+      showMessage(context, "please provide a number");
+      return;
+    }
+    if (emailController.text.isEmpty) {
+      showMessage(context, "please provide a email");
+      return;
+    }
+    if (addressController.text.isEmpty) {
+      showMessage(context, "please provide aaddress");
+      return;
+    }
+    if (salaryController.text.isEmpty) {
+      showMessage(context, "please provide salary");
+      return;
+    }
+    if (designation == null) {
+      showMessage(context, "please provide designation");
+      return;
+    }
+    final employee = EmployeeModel(
+        name: nameController.text,
+        dob: dob!,
+        designation: designation!,
+        mobile: mobileController.text,
+        email: emailController.text,
+        streetAddress: addressController.text,
+        salary: num.parse(salaryController.text),
+        img: imagePath!,
+        gender: genderRadioGroup);
+    employeeList.add(employee);
+    Navigator.pop(context);
   }
 }
