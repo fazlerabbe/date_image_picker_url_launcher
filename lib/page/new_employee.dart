@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:datepicker_employee/employeeModel.dart';
 import 'package:datepicker_employee/helper_function.dart';
+import 'package:datepicker_employee/providers/employee_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class NewEmployee extends StatefulWidget {
   static const String routeName = '/new_employee';
@@ -44,13 +46,7 @@ class _NewEmployeeState extends State<NewEmployee> {
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text("Employee detais page")),
-        actions: [
-          IconButton(
-              onPressed: () {
-                _saveEmployee;
-              },
-              icon: Icon(Icons.done))
-        ],
+        actions: [IconButton(onPressed: _saveEmployee, icon: Icon(Icons.done))],
       ),
       body: ListView(
         children: [
@@ -82,7 +78,7 @@ class _NewEmployeeState extends State<NewEmployee> {
             keyboardType: TextInputType.streetAddress,
             controller: addressController,
             decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.local_activity_outlined),
+                prefixIcon: const Icon(Icons.map),
                 filled: true,
                 labelText: "Enter Address"),
           ),
@@ -142,7 +138,7 @@ class _NewEmployeeState extends State<NewEmployee> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                  onPressed: selectDate, child: Text("select date of batch")),
+                  onPressed: _selectDate, child: Text("select date of batch")),
               Chip(label: Text(dob == null ? "No date chosen" : dob!))
             ],
           ),
@@ -188,7 +184,7 @@ class _NewEmployeeState extends State<NewEmployee> {
     );
   }
 
-  void selectDate() async {
+  void _selectDate() async {
     final selectDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -246,7 +242,9 @@ class _NewEmployeeState extends State<NewEmployee> {
         salary: num.parse(salaryController.text),
         img: imagePath!,
         gender: genderRadioGroup);
-    employeeList.add(employee);
+    EmployeeProvider provider =
+        Provider.of<EmployeeProvider>(context, listen: false);
+    provider.addEmployee(employee);
     Navigator.pop(context);
   }
 }

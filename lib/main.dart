@@ -1,10 +1,14 @@
 import 'package:datepicker_employee/page/employee_details.dart';
 import 'package:datepicker_employee/page/employee_list_page.dart';
 import 'package:datepicker_employee/page/new_employee.dart';
+import 'package:datepicker_employee/providers/employee_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => EmployeeProvider()..getAllEmployee()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

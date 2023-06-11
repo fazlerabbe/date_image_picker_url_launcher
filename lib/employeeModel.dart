@@ -2,7 +2,7 @@
 class EmployeeModel {
   int? empId;
   String name;
-  String dob;
+  String? dob;
   String designation;
   String mobile;
   String email;
@@ -10,18 +10,19 @@ class EmployeeModel {
   num salary;
   String img;
   String gender;
-  EmployeeModel({
-    this.empId,
-    required this.name,
-    required this.dob,
-    required this.designation,
-    required this.mobile,
-    required this.email,
-    required this.streetAddress,
-    required this.salary,
-    required this.img,
-    required this.gender,
-  });
+  bool favorite;
+  EmployeeModel(
+      {this.empId,
+      required this.name,
+      required this.dob,
+      required this.designation,
+      required this.mobile,
+      required this.email,
+      required this.streetAddress,
+      required this.salary,
+      required this.img,
+      required this.gender,
+      this.favorite = false});
 }
 
 final List<EmployeeModel> employeeList = [
